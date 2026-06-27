@@ -10,8 +10,16 @@ import KeyboardKit
 import SwiftUI
 
 let aplKeyMap: [String: String] = [
-    "a": "⍺",
-    "A": "⍶",
+    // Home row
+    "a": "⍺",  "A": "⍶",
+    "s": "⌈",  "S": "⌊",
+    "d": "⌊",  "D": "⌈",
+    "f": "_",  "F": "⍫",
+    "g": "∇",  "G": "∆",
+    "h": "∆",  "H": "⍙",
+    "j": "∘",  "J": "⍤",
+    "k": "′",  "K": "⌸",
+    "l": "⎕",  "L": "⍞",
 ]
 
 class APLActionHandler: KeyboardAction.StandardActionHandler {
