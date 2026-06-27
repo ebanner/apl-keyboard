@@ -88,6 +88,9 @@ class KeyboardViewController: KeyboardInputViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupKeyboardKit(for: KeyboardApp(name: "APLKeyboard"))
+        state.autocompleteContext.settings.isAutocompleteEnabled = false
+        state.autocompleteContext.settings.isToolbarEnabled = false
+        services.autocompleteService = .disabled
     }
 
     override func viewWillSetupKeyboardView() {
