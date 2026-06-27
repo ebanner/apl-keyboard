@@ -9,6 +9,11 @@ import UIKit
 import KeyboardKit
 import SwiftUI
 
+let aplKeyMap: [String: String] = [
+    "a": "⍺",
+    "A": "⍶",
+]
+
 class APLActionHandler: KeyboardAction.StandardActionHandler {
 
     private weak var inputController: KeyboardInputViewController?
@@ -33,10 +38,9 @@ class APLActionHandler: KeyboardAction.StandardActionHandler {
         _ gesture: Keyboard.Gesture,
         on action: KeyboardAction
     ) {
-        if case .character(let char) = action, char == "a" || char == "A" {
+        if case .character(let char) = action, let mapped = aplKeyMap[char] {
             if gesture == .release {
-                let output = char == "A" ? "B" : "b"
-                inputController?.textDocumentProxy.insertText(output)
+                inputController?.textDocumentProxy.insertText(mapped)
             }
             return
         }
@@ -56,8 +60,8 @@ class KeyboardViewController: KeyboardInputViewController {
             KeyboardView(
                 services: controller.services,
                 buttonContent: { item, view in
-                    if case .character(let char) = item.action, char == "a" || char == "A" {
-                        AnyView(Text(char == "A" ? "B" : "b"))
+                    if case .character(let char) = item.action, let mapped = aplKeyMap[char] {
+                        AnyView(Text(mapped))
                     } else {
                         AnyView(view)
                     }
