@@ -7,6 +7,7 @@
 
 import UIKit
 import KeyboardKit
+import SwiftUI
 
 class APLActionHandler: KeyboardAction.StandardActionHandler {
 
@@ -32,8 +33,11 @@ class APLActionHandler: KeyboardAction.StandardActionHandler {
         _ gesture: Keyboard.Gesture,
         on action: KeyboardAction
     ) {
-        if gesture == .release, case .character(let char) = action, char == "a" {
-            inputController?.textDocumentProxy.insertText("b")
+        if case .character(let char) = action, char == "a" || char == "A" {
+            if gesture == .release {
+                let output = char == "A" ? "B" : "b"
+                inputController?.textDocumentProxy.insertText(output)
+            }
             return
         }
         super.handle(gesture, on: action)
@@ -44,13 +48,30 @@ class KeyboardViewController: KeyboardInputViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        services.actionHandler = APLActionHandler(inputController: self)
         setupKeyboardKit(for: KeyboardApp(name: "APLKeyboard"))
     }
 
     override func viewWillSetupKeyboardView() {
         setupKeyboardView { controller in
-            KeyboardView(services: controller.services)
+            KeyboardView(
+                services: controller.services,
+                buttonContent: { item, view in
+                    if case .character(let char) = item.action, char == "a" || char == "A" {
+                        AnyView(Text(char == "A" ? "B" : "b"))
+                    } else {
+                        AnyView(view)
+                    }
+                },
+                buttonView: { item, view in
+                    AnyView(view)
+                }
+            )
         }
+        services.actionHandler = APLActionHandler(inputController: self)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        services.actionHandler = APLActionHandler(inputController: self)
     }
 }
